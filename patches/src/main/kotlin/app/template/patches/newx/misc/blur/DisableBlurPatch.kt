@@ -143,7 +143,7 @@ private fun resolveHazeBlurEnabledRecorder(): MutableMethod {
 private fun patchHazeBlurRecorder(
     method: MutableMethod,
 ) {
-    val inputRegister = method.p0Register + 1
+    val inputRegister = 1 // Registro p1 correspondente ao argumento Boolean de entrada
 
     if (inputRegister > 255) {
         throw IllegalStateException(
@@ -152,7 +152,7 @@ private fun patchHazeBlurRecorder(
         )
     }
 
-    method.addInstructions(
+    method.addInstruction(
         0,
         """
             const/4 v$inputRegister, 0x0
