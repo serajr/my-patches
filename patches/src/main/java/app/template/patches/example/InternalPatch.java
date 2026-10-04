@@ -15,7 +15,7 @@ import java.util.Arrays;
     description = "Patch interno estrutural em Java.",
     dependencies = {}
 )
-public final class InternalPatchJava extends BytecodePatch {
+public class InternalPatchJava extends BytecodePatch {
 
     // Instancia publica para ser referenciada como dependencia caso necessario
     public static final InternalPatchJava INSTANCE = new InternalPatchJava();
