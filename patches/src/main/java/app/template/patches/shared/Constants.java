@@ -8,7 +8,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-public final class Constants {
+public class Constants {
     // Construtor privado para evitar instanciação, simulando o comportamento de um 'object' em Kotlin
     private Constants() {}
 
