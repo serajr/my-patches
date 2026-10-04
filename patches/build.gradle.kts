@@ -4,7 +4,7 @@ patches {
     // TODO: Update this section with your project details.
     about {
         name = "Serajr Patches"
-        description = "My Personal Morphe patches"
+        description = "Some of my personal Morphe patches"
         source = "git@github.com:serajr/morphe-patches.git"
         author = "serajr"
         contact = "na"
@@ -36,4 +36,9 @@ tasks {
     publish {
         dependsOn("generatePatchesList")
     }
+}
+
+tasks.withType<JavaCompile> {
+    sourceCompatibility = "11"
+    targetCompatibility = "11"
 }
