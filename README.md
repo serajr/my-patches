@@ -1,4 +1,4 @@
-# 👋🧩 Add to Morphe
+## Add to Morphe
 
 <p align="center">
   <a href="https://morphe.software/add-source?github=serajr/my-patches">
