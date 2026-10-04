@@ -1,7 +1,6 @@
 package app.template.patches.example;
 
-import app.morphe.patcher.annotation.Patch;
-import app.morphe.patcher.patch.BytecodePatch;
+import app.morphe.patcher.patch.Patch;
 import app.morphe.patcher.patch.PatchContext;
 import app.morphe.patcher.extensions.InstructionExtensions;
 import org.jetbrains.annotations.NotNull;
@@ -9,17 +8,19 @@ import java.util.ArrayList;
 import java.util.List;
 import app.morphe.patcher.patch.Compatibility;
 
-@Patch(
-    name = "Internal Patch",
-    description = "Patch interno estrutural.",
-    dependencies = {}
-)
-public class InternalPatch implements app.morphe.patcher.patch.Patch<BytecodePatch> {
+public class InternalPatch extends Patch {
 
     public static final InternalPatch INSTANCE = new InternalPatch();
     
     private final List<Compatibility> compatibility = new ArrayList<>();
     private final List<String> extensions = new ArrayList<>();
+    private final List<String> dependencies = new ArrayList<>();
+
+    public InternalPatch() {
+        // Define as propriedades de identificação do patch sem precisar de anotações
+        setName("Internal Patch");
+        setDescription("Patch interno estrutural.");
+    }
 
     @NotNull
     @Override
@@ -31,6 +32,12 @@ public class InternalPatch implements app.morphe.patcher.patch.Patch<BytecodePat
     @Override
     public List<String> getExtensions() {
         return extensions;
+    }
+
+    @NotNull
+    @Override
+    public List<String> getDependencies() {
+        return dependencies;
     }
 
     @Override
