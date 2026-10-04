@@ -13,7 +13,7 @@ import java.util.Collections;
     description = "Exemplo de patch funcional e idêntico, escrito em Java.",
     dependencies = { "internalPatch" } // Define a dependência do patch interno
 )
-public final class ExamplePatchJava extends BytecodePatch {
+public class ExamplePatchJava extends BytecodePatch {
 
     private static final String EXTENSION_CLASS = "Lapp/template/extension/ExamplePatch;";
 
