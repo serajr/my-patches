@@ -12,7 +12,7 @@ import java.util.Arrays;
  * https://github.com/MorpheApp/morphe-patcher/blob/main/docs
  * https://github.com/MorpheApp/morphe-patcher/blob/main/docs/2_2_1_fingerprinting.md
  */
-public final class AdLoaderFingerprint extends Fingerprint {
+public class AdLoaderFingerprint extends Fingerprint {
 
     // Instancia o padrão Singleton estático ("object" do Kotlin) para ser consumido pelo ExamplePatchJava
     public static final AdLoaderFingerprint INSTANCE = new AdLoaderFingerprint();
