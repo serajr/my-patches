@@ -1,11 +1,14 @@
 package app.template.patches.util
 
-fun <T> Collection<T>.requireExactlyOne(
-    resourceName: String,
-    predicate: (T) -> String
-): T {
+/**
+ * Garante que uma coleção possui exatamente um elemento.
+ */
+fun <T> Collection<T>.requireExactlyOne(resourceName: String): T {
     if (this.size != 1) {
-        throw IllegalStateException("Erro: Esperava 1 ocorrência para [$resourceName] mas achei ${this.size}")
+        throw IllegalStateException(
+            "Erro de Engenharia Reversa: Esperava exatamente 1 ocorrência para [$resourceName], " +
+            "mas foram encontradas ${this.size} correspondências no bytecode."
+        )
     }
     return this.first()
 }
