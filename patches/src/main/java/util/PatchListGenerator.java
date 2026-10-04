@@ -6,7 +6,7 @@
 package util;
 
 import app.morphe.patcher.patch.Patch;
-import app.morphe.patcher.patch.PatcherUtilsKt;
+import app.morphe.patcher.patch.PatchUtils;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
@@ -46,7 +46,7 @@ public class PatchListGenerator {
             Set<File> patchFiles = Collections.singleton(firstMpp);
 
             // Carrega os patches utilizando o utilitário nativo embutido do ecossistema Morphe
-            Set<Patch<?>> loadedPatches = PatcherUtilsKt.loadPatchesFromJar(patchFiles);
+            Set<Patch<?>> loadedPatches = PatchUtils.loadPatchesFromJar(patchFiles);
 
             URL[] urls = new URL[]{ firstMpp.toURI().toURL() };
             try (URLClassLoader patchClassLoader = new URLClassLoader(urls)) {
