@@ -38,7 +38,15 @@ tasks {
     }
 }
 
+// Alinha o compilador de arquivos Java para a versão 21
 tasks.withType<JavaCompile> {
-    sourceCompatibility = "11"
-    targetCompatibility = "11"
+    sourceCompatibility = "21"
+    targetCompatibility = "21"
+}
+
+// Alinha o compilador de arquivos Kotlin para a versão 21
+tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
+    compilerOptions {
+        jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_21)
+    }
 }
