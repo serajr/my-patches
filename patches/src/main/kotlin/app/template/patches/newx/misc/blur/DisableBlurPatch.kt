@@ -6,18 +6,23 @@
 
 package app.template.patches.newx.misc.blur
 
+// Imports utilitários do seu repositório
 import app.template.patches.util.requireExactlyOne
 import app.template.patches.shared.Constants.COMPATIBILITY_NEW_X
 
+// Imports estruturais essenciais do ecossistema Morphe
 import app.morphe.patcher.patch.BytecodePatchContext
 import app.morphe.patcher.patch.bytecodePatch
 import app.morphe.patcher.util.proxy.mutableTypes.MutableMethod
 
+// Imports de extensões de registradores do Morphe Patcher
 import app.morphe.util.getReference
 import app.morphe.util.p0Register
 
+// Imports das ferramentas do Smali para manipulação de Dex de baixo nível
 import com.android.tools.smali.dexlib2.AccessFlags
 import com.android.tools.smali.dexlib2.Opcode
+import com.android.tools.smali.dexlib2.iface.Method
 import com.android.tools.smali.dexlib2.iface.instruction.formats.Instruction35c
 import com.android.tools.smali.dexlib2.iface.reference.MethodReference
 
@@ -180,4 +185,3 @@ val newXDisableBlurPatch =
             patchHazeBlurRecorder(recorder)
         }
     }
-
