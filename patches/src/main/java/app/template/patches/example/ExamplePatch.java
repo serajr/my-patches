@@ -1,29 +1,31 @@
 package app.template.patches.example;
 
-import app.morphe.patcher.annotation.Patch;
-import app.morphe.patcher.patch.BytecodePatch;
+import app.morphe.patcher.patch.Patch;
 import app.morphe.patcher.patch.PatchContext;
 import app.morphe.patcher.extensions.InstructionExtensions;
-import app.template.patches.shared.Constants; // Verifique se o seu arquivo chama Constants ou ConstantsJava
+import app.template.patches.shared.ConstantsJava; // Altere para Constants se seu arquivo chamar Constants.java
 import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 import app.morphe.patcher.patch.Compatibility;
 
-@Patch(
-    name = "Example Patch",
-    description = "Exemplo de patch funcional escrito em Java.",
-    dependencies = { "Internal Patch" }
-)
-public class ExamplePatch implements app.morphe.patcher.patch.Patch<BytecodePatch> {
-
-    public ExamplePatch() {
-        getCompatibility().add(Constants.COMPATIBILITY_EXAMPLE); // Altere para ConstantsJava se for o caso
-        getExtensions().add("extensions/extension.mpe");
-    }
+public class ExamplePatch extends Patch {
 
     private final List<Compatibility> compatibility = new ArrayList<>();
     private final List<String> extensions = new ArrayList<>();
+    private final List<String> dependencies = new ArrayList<>();
+
+    public ExamplePatch() {
+        setName("Example Patch");
+        setDescription("Exemplo de patch funcional escrito em Java.");
+        
+        // Define o Internal Patch como dependência obrigatória
+        getDependencies().add("Internal Patch");
+        
+        // Vincula compatibilidades e extensões
+        getCompatibility().add(ConstantsJava.COMPATIBILITY_EXAMPLE); // Altere para Constants se necessário
+        getExtensions().add("extensions/extension.mpe");
+    }
 
     @NotNull
     @Override
@@ -35,6 +37,12 @@ public class ExamplePatch implements app.morphe.patcher.patch.Patch<BytecodePatc
     @Override
     public List<String> getExtensions() {
         return extensions;
+    }
+
+    @NotNull
+    @Override
+    public List<String> getDependencies() {
+        return dependencies;
     }
 
     @Override
