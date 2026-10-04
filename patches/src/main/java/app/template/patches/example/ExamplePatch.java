@@ -4,37 +4,45 @@ import app.morphe.patcher.annotation.Patch;
 import app.morphe.patcher.patch.BytecodePatch;
 import app.morphe.patcher.patch.PatchContext;
 import app.morphe.patcher.extensions.InstructionExtensions;
-import app.template.patches.shared.Constants;
+import app.template.patches.shared.Constants; // Verifique se o seu arquivo chama Constants ou ConstantsJava
 import org.jetbrains.annotations.NotNull;
-import java.util.Collections;
+import java.util.ArrayList;
+import java.util.List;
+import app.morphe.patcher.patch.Compatibility;
 
 @Patch(
     name = "Example Patch",
-    description = "Exemplo de patch funcional.",
-    dependencies = { "internalPatch" } // Define a dependência do patch interno
+    description = "Exemplo de patch funcional escrito em Java.",
+    dependencies = { "Internal Patch" }
 )
-public class ExamplePatch extends BytecodePatch {
-
-    private static final String EXTENSION_CLASS = "Lapp/template/extension/ExamplePatch;";
+public class ExamplePatch implements app.morphe.patcher.patch.Patch<BytecodePatch> {
 
     public ExamplePatch() {
-        // Vincula a compatibilidade definida nas constantes compartilhadas
-        getCompatibility().add(Constants.COMPATIBILITY_EXAMPLE);
-        
-        // Vincula a extensão compilada externa obrigatória do arquivo do patch (.mpe)
+        getCompatibility().add(Constants.COMPATIBILITY_EXAMPLE); // Altere para ConstantsJava se for o caso
         getExtensions().add("extensions/extension.mpe");
+    }
+
+    private final List<Compatibility> compatibility = new ArrayList<>();
+    private final List<String> extensions = new ArrayList<>();
+
+    @NotNull
+    @Override
+    public List<Compatibility> getCompatibility() {
+        return compatibility;
+    }
+
+    @NotNull
+    @Override
+    public List<String> getExtensions() {
+        return extensions;
     }
 
     @Override
     public void execute(@NotNull PatchContext context) {
-        // Lógica de negócio do patch para desativar anúncios no aplicativo alvo
-        // Injeta as instruções Smali no começo (índice 0) do método mapeado pela Fingerprint
         InstructionExtensions.addInstructions(
-            AdLoaderFingerprint.INSTANCE.getMethod(),
+            Fingerprints.INSTANCE.getMethod(),
             0,
-            "invoke-static {}, " + EXTENSION_CLASS + "->showAds()Z\n" +
-            "move-result v0\n" +
-            "return v0"
+            "invoke-static {}, Lapp/template/extension/ExamplePatch;->showAds()Z\nmove-result v0\nreturn v0"
         );
     }
 }
