@@ -27,7 +27,7 @@ import java.util.Set;
 import java.util.jar.Manifest;
 import java.util.stream.Collectors;
 
-public final class PatchListGenerator {
+public class PatchListGenerator {
 
     public static void main(String[] args) {
         try {
