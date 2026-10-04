@@ -11,16 +11,16 @@ import java.util.Arrays;
 // Patch interno que nao e exibido na lista publica do Morphe Manager,
 // mas e marcado como dependencia obrigatoria para o funcionamento de outros patches.
 @Patch(
-    name = "Internal Patch Java",
-    description = "Patch interno estrutural em Java.",
+    name = "Internal Patch",
+    description = "Patch interno estrutural.",
     dependencies = {}
 )
-public class InternalPatchJava extends BytecodePatch {
+public class InternalPatch extends BytecodePatch {
 
     // Instancia publica para ser referenciada como dependencia caso necessario
-    public static final InternalPatchJava INSTANCE = new InternalPatchJava();
+    public static final InternalPatch INSTANCE = new InternalPatch();
 
-    public InternalPatchJava() {
+    public InternalPatch() {
         // Construtor base limpo para o orquestrador do Morphe
     }
 
