@@ -1,44 +1,51 @@
 package app.template.patches.example;
 
-import app.morphe.patcher.Fingerprint;
 import app.morphe.patcher.annotation.Patch;
 import app.morphe.patcher.patch.BytecodePatch;
 import app.morphe.patcher.patch.PatchContext;
 import app.morphe.patcher.extensions.InstructionExtensions;
 import org.jetbrains.annotations.NotNull;
-import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.List;
+import app.morphe.patcher.patch.Compatibility;
 
-// Patch interno que nao e exibido na lista publica do Morphe Manager,
-// mas e marcado como dependencia obrigatoria para o funcionamento de outros patches.
 @Patch(
     name = "Internal Patch",
     description = "Patch interno estrutural.",
     dependencies = {}
 )
-public class InternalPatch extends BytecodePatch {
+public class InternalPatch implements app.morphe.patcher.patch.Patch<BytecodePatch> {
 
-    // Instancia publica para ser referenciada como dependencia caso necessario
     public static final InternalPatch INSTANCE = new InternalPatch();
+    
+    private final List<Compatibility> compatibility = new ArrayList<>();
+    private final List<String> extensions = new ArrayList<>();
 
-    public InternalPatch() {
-        // Construtor base limpo para o orquestrador do Morphe
+    @NotNull
+    @Override
+    public List<Compatibility> getCompatibility() {
+        return compatibility;
+    }
+
+    @NotNull
+    @Override
+    public List<String> getExtensions() {
+        return extensions;
     }
 
     @Override
     public void execute(@NotNull PatchContext context) {
-        // Cria a busca anonima baseada na assinatura da Fingerprint do AdLoader
-        Fingerprint internalFingerprint = new Fingerprint(
+        app.morphe.patcher.Fingerprint internalFingerprint = new app.morphe.patcher.Fingerprint(
             null,
             "unrelatedMethod",
             null,
             null,
-            Arrays.asList("Ljava/lang/String;"),
+            java.util.Arrays.asList("Ljava/lang/String;"),
             null,
-            AdLoaderFingerprint.INSTANCE,
+            Fingerprints.INSTANCE,
             null
         );
 
-        // Injeta a instrucao Smali no indice zero do metodo localizado
         InstructionExtensions.addInstruction(
             internalFingerprint.getMethod(),
             0,
