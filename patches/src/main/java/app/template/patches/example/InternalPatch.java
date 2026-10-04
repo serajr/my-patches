@@ -4,56 +4,40 @@ import app.morphe.patcher.patch.Patch;
 import app.morphe.patcher.patch.PatchContext;
 import app.morphe.patcher.extensions.InstructionExtensions;
 import org.jetbrains.annotations.NotNull;
-import java.util.ArrayList;
-import java.util.List;
-import app.morphe.patcher.patch.Compatibility;
+import java.util.Collections;
 
 public class InternalPatch extends Patch {
 
     public static final InternalPatch INSTANCE = new InternalPatch();
     
-    private final List<Compatibility> compatibility = new ArrayList<>();
-    private final List<String> extensions = new ArrayList<>();
-    private final List<String> dependencies = new ArrayList<>();
-
     public InternalPatch() {
-        // Define as propriedades de identificação do patch sem precisar de anotações
-        setName("Internal Patch");
-        setDescription("Patch interno estrutural.");
-    }
-
-    @NotNull
-    @Override
-    public List<Compatibility> getCompatibility() {
-        return compatibility;
-    }
-
-    @NotNull
-    @Override
-    public List<String> getExtensions() {
-        return extensions;
-    }
-
-    @NotNull
-    @Override
-    public List<String> getDependencies() {
-        return dependencies;
+        super(
+            "Internal Patch",
+            "Patch interno estrutural.",
+            true,
+            Collections.emptySet(),
+            Collections.emptySet(),
+            Collections.emptySet(),
+            null,
+            null
+        );
     }
 
     @Override
-    public void execute(@NotNull PatchContext context) {
+    public void executeOn(@NotNull PatchContext context) {
         app.morphe.patcher.Fingerprint internalFingerprint = new app.morphe.patcher.Fingerprint(
-            null,
+            Fingerprints.INSTANCE, // classFingerprint como primeiro argumento
             "unrelatedMethod",
-            null,
-            null,
+            Collections.emptyList(),
+            "",
             java.util.Arrays.asList("Ljava/lang/String;"),
-            null,
-            Fingerprints.INSTANCE,
+            Collections.emptyList(),
+            Collections.emptyList(),
             null
         );
 
         InstructionExtensions.addInstruction(
+            InstructionExtensions.INSTANCE,
             internalFingerprint.getMethod(),
             0,
             "const-string p1, \"dummy.value.overide\""
