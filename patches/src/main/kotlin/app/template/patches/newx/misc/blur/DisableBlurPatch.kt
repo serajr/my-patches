@@ -62,7 +62,7 @@ private fun Method.isHazeBlurEnabledRecorder(): Boolean {
     val instructions = implementation?.instructions?.toList()
         ?: return false
 
-    val inputRegister = p0Register + 1
+    val inputRegister = 1 // No padrão Smali para métodos virtuais com 1 parâmetro (Z), o p1 (registro 1) é o argumento de entrada
 
     /*
      * O método precisa transformar o boolean recebido em
