@@ -118,13 +118,8 @@ private fun resolveHazeBlurEnabledRecorder(): MutableMethod {
         }
     }
 
-    val recorderClass =
-        requireExactlyOne(
-            "NewX Haze blur override recorder class",
-            recorderClasses,
-        ) {
-            it
-        }
+    // Corrigido para usar a extensão direta sem o bloco lambda que causava erro de tipo
+    val recorderClass = recorderClasses.requireExactlyOne("NewX Haze blur override recorder class")
 
     val recorderMethods =
         context.mutableClassDefBy(recorderClass)
@@ -133,12 +128,8 @@ private fun resolveHazeBlurEnabledRecorder(): MutableMethod {
                 method.isHazeBlurEnabledRecorder()
             }
 
-    return requireExactlyOne(
-        "NewX Haze blur override recorder setter",
-        recorderMethods,
-    ) {
-        it.toString()
-    }
+    // Corrigido para usar a extensão direta sem o bloco lambda que causava erro de tipo
+    return recorderMethods.requireExactlyOne("NewX Haze blur override recorder setter")
 }
 
 /**
