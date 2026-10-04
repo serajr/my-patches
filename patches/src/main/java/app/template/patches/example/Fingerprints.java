@@ -14,7 +14,7 @@ import java.util.Arrays;
  */
 public class AdLoaderFingerprint extends Fingerprint {
 
-    // Instancia o padrão Singleton estático ("object" do Kotlin) para ser consumido pelo ExamplePatchJava
+    // Instancia o padrão Singleton estático para ser consumido pelo ExamplePatch
     public static final AdLoaderFingerprint INSTANCE = new AdLoaderFingerprint();
 
     private AdLoaderFingerprint() {
