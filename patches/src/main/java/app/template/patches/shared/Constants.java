@@ -7,9 +7,9 @@ import app.morphe.patcher.patch.SupportedAbi;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Collections;
 
-public class Constants {
-    // Construtor privado para evitar instanciação, simulando o comportamento de um 'object' em Kotlin
+public final class Constants {
     private Constants() {}
 
     public static final Compatibility COMPATIBILITY_EXAMPLE;
@@ -17,41 +17,32 @@ public class Constants {
     public static final Compatibility COMPATIBILITY_EXAMPLE_3;
 
     static {
-        // Inicialização do COMPATIBILITY_EXAMPLE
         COMPATIBILITY_EXAMPLE = new Compatibility(
-            "XYZ app", // Nome do App como aparece no launcher do Android.
+            "XYZ app",
             "com.example.app",
-            // IMPORTANTE: Esta declaração precisa bater com o tipo de arquivo no APKMirror/UpToDown.
+            "",
             ApkFileType.APK,
-            // Cor do ícone no Morphe Manager. Geralmente a cor de fundo ou primária do ícone.
             0xFF0045,
+            Collections.emptySet(),
             Arrays.asList(
-                // "version = null" significa que o patch funciona com a versão mais recente
-                // e deve continuar funcionando nas versões futuras do app alvo.
-                new AppTarget("2.0.0", null, false, null, null),
-                new AppTarget("1.0.2", null, false, null, null)
-            ),
-            null
+                new AppTarget("2.0.0", Collections.emptyMap(), false, null, ""),
+                new AppTarget("1.0.2", Collections.emptyMap(), false, null, "")
+            )
         );
 
-        // Inicialização do COMPATIBILITY_EXAMPLE_2
         COMPATIBILITY_EXAMPLE_2 = new Compatibility(
             "XYZ app",
             "com.example.app",
+            "",
             ApkFileType.APKM,
             0x00FF45,
+            Collections.emptySet(),
             Arrays.asList(
-                // Versão 'any' (qualquer) suportada de forma experimental.
-                new AppTarget(null, null, true, null, null),
-                // Versão do app confirmada como 100% funcional.
-                new AppTarget("1.0.2", null, false, null, null)
-            ),
-            null
+                new AppTarget("", Collections.emptyMap(), true, null, ""),
+                new AppTarget("1.0.2", Collections.emptyMap(), false, null, "")
+            )
         );
 
-        // Restrição por código de versão (Version Code).
-        // Necessário para certos apps que possuem múltiplos lançamentos de arquitetura com o mesmo
-        // nome de versão (1.0.1) mas códigos de versão diferentes (584009457).
         Map<SupportedAbi, Integer> versionCodesMap = new HashMap<>();
         versionCodesMap.put(SupportedAbi.ARM64_V8A, 584009457);
         versionCodesMap.put(SupportedAbi.ARMEABI_V7A, 584119423);
@@ -59,18 +50,13 @@ public class Constants {
         COMPATIBILITY_EXAMPLE_3 = new Compatibility(
             "XYZ app",
             "com.example.app",
+            "",
             ApkFileType.APKM,
             0x00FF45,
+            Collections.emptySet(),
             Arrays.asList(
-                new AppTarget(
-                    "1.0.5",
-                    versionCodesMap,
-                    false,
-                    null,
-                    null
-                )
-            ),
-            null
+                new AppTarget("1.0.5", versionCodesMap, false, null, "")
+            )
         );
     }
 }
