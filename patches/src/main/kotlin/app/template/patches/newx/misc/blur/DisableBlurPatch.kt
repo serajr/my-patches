@@ -6,7 +6,7 @@
 
 package app.template.patches.newx.misc.blur
 
-import app.crimera.patches.common.requireExactlyOne
+import app.template.patches.util.requireExactlyOne
 import app.template.patches.shared.Constants.COMPATIBILITY_X_TWITTER
 
 import app.morphe.patcher.patch.BytecodePatchContext
