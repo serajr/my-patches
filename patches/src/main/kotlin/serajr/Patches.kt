@@ -2,6 +2,7 @@ package serajr
 
 import app.morphe.patcher.Fingerprint
 import app.morphe.patcher.extensions.InstructionExtensions.addInstruction
+import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.patch.bytecodePatch
 
 private const val CLS = "Lapp/template/extension/ExamplePatch;"
@@ -20,7 +21,7 @@ val examplePatch = bytecodePatch(
 
     // Business logic of the patch to disable ads in the app.
     execute {
-        Fingerprints.AdLoaderFingerprint.method.addInstructions(
+        AdLoaderFingerprint.method.addInstructions(
             0,
             """
                 invoke-static {}, $CLS;->showAds()Z
