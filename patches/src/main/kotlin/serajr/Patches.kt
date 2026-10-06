@@ -12,8 +12,7 @@ val examplePatch = bytecodePatch(
     description = "Example patch to start with.",
     default = true
 ) {
-    // Contants.kt
-    compatibleWith(COMPATIBILITY_X)
+    compatibleWith(Constants.COMPATIBILITY_X)
 
     dependsOn(internalPatch)
 
@@ -21,7 +20,7 @@ val examplePatch = bytecodePatch(
 
     // Business logic of the patch to disable ads in the app.
     execute {
-        AdLoaderFingerprint.method.addInstructions(
+        Fingerprints.AdLoaderFingerprint.method.addInstructions(
             0,
             """
                 invoke-static {}, $CLS;->showAds()Z
