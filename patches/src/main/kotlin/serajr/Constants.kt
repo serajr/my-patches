@@ -6,8 +6,8 @@ import app.morphe.patcher.patch.Compatibility
 import java.util.Collections
 
 object Constants {
-    val COMPATIBILITY_NEW_X = Compatibility(
-        name = "X",
+    val COMPATIBILITY_X = Compatibility(
+        name = "X (Twitter)",
         packageName = "com.twitter.android",
         description = "Aplicativo oficial do X (Twitter)",
         apkFileType = ApkFileType.APK,
