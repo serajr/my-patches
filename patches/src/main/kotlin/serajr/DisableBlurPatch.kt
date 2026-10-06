@@ -1,6 +1,7 @@
 package serajr
 
 import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.extensions.MethodExtensions.addInstruction
 import com.android.tools.smali.dexlib2.AccessFlags
 import com.android.tools.smali.dexlib2.Opcode
 import com.android.tools.smali.dexlib2.iface.Method
