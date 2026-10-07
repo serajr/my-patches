@@ -1,6 +1,7 @@
 package serajr
 
 import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.util.proxy.mutableTypes.extensions.addInstructions
 import com.android.tools.smali.dexlib2.AccessFlags
 import com.android.tools.smali.dexlib2.Opcode
 import com.android.tools.smali.dexlib2.iface.Method
@@ -44,15 +45,15 @@ val disableBlurPatch = bytecodePatch(
             val mutableMethod = mutableClass.methods.firstOrNull { it.toString() == method.toString() }
             
             if (mutableMethod != null) {
-                // Em métodos virtuais (não estáticos) do DEX:
-                // v0 = this (p0)
-                // v1 = primeiro parâmetro (p1) -> Que é o nosso Boolean blurEnabled!
+                // No DEX, métodos virtuais com 1 parâmetro usam o registrador v1 para a entrada
                 val inputRegister = 1
                 
-                // Injeta diretamente utilizando a extensão oficial de strings Smali do Morphe
-                mutableMethod.addInstruction(
+                // Injeta utilizando a extensão oficial do proxy do Morphe (addInstructions no plural)
+                mutableMethod.addInstructions(
                     0,
-                    "const/4 v$inputRegister, 0x0"
+                    """
+                        const/4 v$inputRegister, 0x0
+                    """
                 )
             }
         }
@@ -66,7 +67,7 @@ private fun isHazeBlurEnabledRecorder(method: Method): Boolean {
 
     val instructions = method.implementation?.instructions?.toList() ?: return false
     
-    // O registrador p1 (v1) recebe o parâmetro de entrada boolean
+    // O registrador v1 recebe o parâmetro de entrada boolean
     val inputRegister = 1
     
     // Procura pela chamada que encapsula o Boolean primitivo
