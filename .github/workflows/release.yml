@@ -50,9 +50,19 @@ jobs:
           subject-path: patches/build/libs/patches-*.mpp
 
       # Always verify compilation when semantic-release did not publish a release.
-      # This covers non-main/dev branches, chore commits, docs commits, etc.
+      # Removido o 'clean' para que os arquivos gerados não sejam deletados da pasta build.
       - name: Verify project compiles
         if: steps.release.outputs.new_release_published != 'true'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: ./gradlew :patches:buildAndroid clean --no-daemon
+        run: ./gradlew :patches:buildAndroid --no-daemon
+
+      # NOVO PASSO: Salva os arquivos de extensão compilados como artefatos baixáveis na página do Action
+      - name: Fazer o Upload do Patch (.mpe ou .mpp)
+        uses: actions/upload-artifact@v4
+        with:
+          name: meu-patch-twitter-compilado
+          path: |
+            patches/build/libs/*.mpp
+            patches/build/outputs/**/*.mpe
+          if-no-files-found: warn
