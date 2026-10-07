@@ -7,7 +7,6 @@ import com.android.tools.smali.dexlib2.iface.Method
 import com.android.tools.smali.dexlib2.iface.instruction.ReferenceInstruction
 import com.android.tools.smali.dexlib2.iface.instruction.formats.Instruction35c
 import com.android.tools.smali.dexlib2.iface.reference.MethodReference
-import com.android.tools.smali.util.MethodUtil
 
 private const val HAZE_SCOPE = "Ldev/chrisbanes/haze/"
 private const val BOOLEAN_DESCRIPTOR = "Z"
@@ -41,15 +40,17 @@ val disableBlurPatch = bytecodePatch(
 
         // Se encontrar o método, força o parâmetro booleano de entrada a ser sempre false (0)
         targetMethod?.let { method ->
-            val mutableMethod = mutableClassDefBy(method.definingClass).methods.firstOrNull { it.toString() == method.toString() }
+            val mutableClass = mutableClassDefBy(method.definingClass)
+            val mutableMethod = mutableClass.methods.firstOrNull { it.toString() == method.toString() }
+            
             if (mutableMethod != null) {
-                // Calcula o registrador de parâmetro de forma nativa pela contagem de argumentos
-                val isStatic = AccessFlags.STATIC.isSet(method.accessFlags)
-                val p0Register = MethodUtil.getParameterRegisterCount(method, isStatic)
-                val inputRegister = p0Register + 1
+                // Em métodos virtuais (não estáticos) do DEX:
+                // v0 = this (p0)
+                // v1 = primeiro parâmetro (p1) -> Que é o nosso Boolean blurEnabled!
+                val inputRegister = 1
                 
-                // Usa o método nativo de manipulação de instruções do Morphe
-                mutableMethod.instructions.add(
+                // Injeta diretamente utilizando a extensão oficial de strings Smali do Morphe
+                mutableMethod.addInstruction(
                     0,
                     "const/4 v$inputRegister, 0x0"
                 )
@@ -65,9 +66,8 @@ private fun isHazeBlurEnabledRecorder(method: Method): Boolean {
 
     val instructions = method.implementation?.instructions?.toList() ?: return false
     
-    val isStatic = AccessFlags.STATIC.isSet(method.accessFlags)
-    val p0Register = MethodUtil.getParameterRegisterCount(method, isStatic)
-    val inputRegister = p0Register + 1
+    // O registrador p1 (v1) recebe o parâmetro de entrada boolean
+    val inputRegister = 1
     
     // Procura pela chamada que encapsula o Boolean primitivo
     val boxCalls = instructions.filter { inst ->
