@@ -1,6 +1,7 @@
 package serajr
 
 import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import com.android.tools.smali.dexlib2.AccessFlags
 import com.android.tools.smali.dexlib2.Opcode
 import com.android.tools.smali.dexlib2.iface.Method
@@ -38,7 +39,7 @@ val disableBlurPatch = bytecodePatch(
             }
         }
 
-        // Se encontrar o método, injeta o comando usando a API fundamental de strings Smali do Morphe
+        // Se encontrar o método, injeta o comando usando a extensão oficial InstructionExtensions
         targetMethod?.let { method ->
             val mutableClass = mutableClassDefBy(method.definingClass)
             val mutableMethod = mutableClass.methods.firstOrNull { it.toString() == method.toString() }
@@ -47,10 +48,8 @@ val disableBlurPatch = bytecodePatch(
                 // v1 corresponde ao registrador p1 em métodos virtuais (primeiro parâmetro booleano)
                 val inputRegister = 1
                 
-                // Em vez de addInstructions/addInstruction de pacotes ausentes, usamos a API do bloco execute nativa do Morphe:
-                // Ela recebe uma lista com o índice e a string Smali a ser compilada.
-                addInstructions(
-                    mutableMethod,
+                // A extensão addInstructions do Morphe estende diretamente o objeto do método mutável
+                mutableMethod.addInstructions(
                     0,
                     """
                         const/4 v$inputRegister, 0x0
