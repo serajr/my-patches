@@ -1,14 +1,13 @@
 package serajr
 
 import app.morphe.patcher.patch.bytecodePatch
-import app.morphe.patcher.extensions.MethodExtensions.addInstruction
 import com.android.tools.smali.dexlib2.AccessFlags
 import com.android.tools.smali.dexlib2.Opcode
 import com.android.tools.smali.dexlib2.iface.Method
 import com.android.tools.smali.dexlib2.iface.instruction.ReferenceInstruction
 import com.android.tools.smali.dexlib2.iface.instruction.formats.Instruction35c
 import com.android.tools.smali.dexlib2.iface.reference.MethodReference
-import com.android.tools.smali.dexlib2.util.MethodUtil
+import com.android.tools.smali.util.MethodUtil
 
 private const val HAZE_SCOPE = "Ldev/chrisbanes/haze/"
 private const val BOOLEAN_DESCRIPTOR = "Z"
@@ -49,8 +48,8 @@ val disableBlurPatch = bytecodePatch(
                 val p0Register = MethodUtil.getParameterRegisterCount(method, isStatic)
                 val inputRegister = p0Register + 1
                 
-                // Injeta o comando Smali na primeira linha do método usando a API nativa
-                mutableMethod.addInstruction(
+                // Usa o método nativo de manipulação de instruções do Morphe
+                mutableMethod.instructions.add(
                     0,
                     "const/4 v$inputRegister, 0x0"
                 )
