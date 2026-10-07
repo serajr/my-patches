@@ -1,7 +1,6 @@
 package serajr
 
 import app.morphe.patcher.patch.bytecodePatch
-import app.morphe.patcher.util.proxy.mutableTypes.extensions.addInstructions
 import com.android.tools.smali.dexlib2.AccessFlags
 import com.android.tools.smali.dexlib2.Opcode
 import com.android.tools.smali.dexlib2.iface.Method
@@ -39,17 +38,19 @@ val disableBlurPatch = bytecodePatch(
             }
         }
 
-        // Se encontrar o método, força o parâmetro booleano de entrada a ser sempre false (0)
+        // Se encontrar o método, injeta o comando usando a API fundamental de strings Smali do Morphe
         targetMethod?.let { method ->
             val mutableClass = mutableClassDefBy(method.definingClass)
             val mutableMethod = mutableClass.methods.firstOrNull { it.toString() == method.toString() }
             
             if (mutableMethod != null) {
-                // No DEX, métodos virtuais com 1 parâmetro usam o registrador v1 para a entrada
+                // v1 corresponde ao registrador p1 em métodos virtuais (primeiro parâmetro booleano)
                 val inputRegister = 1
                 
-                // Injeta utilizando a extensão oficial do proxy do Morphe (addInstructions no plural)
-                mutableMethod.addInstructions(
+                // Em vez de addInstructions/addInstruction de pacotes ausentes, usamos a API do bloco execute nativa do Morphe:
+                // Ela recebe uma lista com o índice e a string Smali a ser compilada.
+                addInstructions(
+                    mutableMethod,
                     0,
                     """
                         const/4 v$inputRegister, 0x0
@@ -66,8 +67,6 @@ private fun isHazeBlurEnabledRecorder(method: Method): Boolean {
     if (method.returnType != "V" || method.parameterTypes.map { it.toString() } != listOf(BOOLEAN_DESCRIPTOR)) return false
 
     val instructions = method.implementation?.instructions?.toList() ?: return false
-    
-    // O registrador v1 recebe o parâmetro de entrada boolean
     val inputRegister = 1
     
     // Procura pela chamada que encapsula o Boolean primitivo
